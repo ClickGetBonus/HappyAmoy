@@ -1,0 +1,25 @@
+platform :ios, '9.0'
+target "HappyAmoy" do
+use_frameworks!
+
+pod 'AFNetworking', '~> 3.0'
+pod 'MJExtension','~> 3.0.10'
+pod 'SVProgressHUD','~>2.0-beta8'
+pod 'MJRefresh'
+pod 'Masonry'
+pod 'YYText'
+pod 'ReactiveCocoa','2.1.8'
+pod 'SDWebImage'
+pod 'JPush'
+pod 'UMCCommon'
+pod 'UMCShare/UI'
+pod 'UMCShare/Social/QQ'
+pod 'UMCShare/Social/AlipayShare'
+pod 'UMCShare/Social/ReducedWeChat'
+pod 'UMCShare/Social/ReducedSina'
+pod 'DZNEmptyDataSet', '~> 1.8.1'
+pod 'SDCycleScrollView','~> 1.75'
+pod 'DTCoreText', '~> 1.6.21'
+pod 'BRPickerView'
+pod 'WebViewJavascriptBridge', '~> 6.0'
+end

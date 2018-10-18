@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="WYTagCell">
+            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yns-lh-BgB">
+                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <connections>
+                            <action selector="didClickTagButton:" destination="gTV-IL-0wX" eventType="touchUpInside" id="GqY-Xd-WDY"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="Yns-lh-BgB" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="2rX-D2-XYi"/>
+                <constraint firstAttribute="bottom" secondItem="Yns-lh-BgB" secondAttribute="bottom" id="FLf-DQ-4FL"/>
+                <constraint firstItem="Yns-lh-BgB" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="H5j-zj-OkT"/>
+                <constraint firstAttribute="trailing" secondItem="Yns-lh-BgB" secondAttribute="trailing" id="fZR-s8-pmw"/>
+            </constraints>
+            <connections>
+                <outlet property="tagButton" destination="Yns-lh-BgB" id="IXl-hz-FoV"/>
+            </connections>
+        </collectionViewCell>
+    </objects>
+</document>

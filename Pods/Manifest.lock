@@ -1,0 +1,145 @@
+PODS:
+  - AFNetworking (3.2.0):
+    - AFNetworking/NSURLSession (= 3.2.0)
+    - AFNetworking/Reachability (= 3.2.0)
+    - AFNetworking/Security (= 3.2.0)
+    - AFNetworking/Serialization (= 3.2.0)
+    - AFNetworking/UIKit (= 3.2.0)
+  - AFNetworking/NSURLSession (3.2.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.2.0)
+  - AFNetworking/Security (3.2.0)
+  - AFNetworking/Serialization (3.2.0)
+  - AFNetworking/UIKit (3.2.0):
+    - AFNetworking/NSURLSession
+  - BRPickerView (2.1.0):
+    - MJExtension (~> 3.0.13)
+  - DTCoreText (1.6.21):
+    - DTCoreText/Core (= 1.6.21)
+    - DTFoundation/Core (~> 1.7.5)
+    - DTFoundation/DTAnimatedGIF (~> 1.7.5)
+    - DTFoundation/DTHTMLParser (~> 1.7.5)
+    - DTFoundation/UIKit (~> 1.7.5)
+  - DTCoreText/Core (1.6.21):
+    - DTFoundation/Core (~> 1.7.5)
+    - DTFoundation/DTAnimatedGIF (~> 1.7.5)
+    - DTFoundation/DTHTMLParser (~> 1.7.5)
+    - DTFoundation/UIKit (~> 1.7.5)
+  - DTFoundation/Core (1.7.13)
+  - DTFoundation/DTAnimatedGIF (1.7.13)
+  - DTFoundation/DTHTMLParser (1.7.13):
+    - DTFoundation/Core
+  - DTFoundation/UIKit (1.7.13):
+    - DTFoundation/Core
+  - DZNEmptyDataSet (1.8.1)
+  - JCore (1.1.7)
+  - JPush (3.0.8):
+    - JCore (~> 1.1.7)
+  - Masonry (1.1.0)
+  - MJExtension (3.0.13)
+  - MJRefresh (3.1.15.3)
+  - ReactiveCocoa (2.1.8):
+    - ReactiveCocoa/Core (= 2.1.8)
+    - ReactiveCocoa/no-arc (= 2.1.8)
+  - ReactiveCocoa/Core (2.1.8):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.1.8)
+  - SDCycleScrollView (1.75):
+    - SDWebImage (>= 4.0.0)
+  - SDWebImage (4.3.1):
+    - SDWebImage/Core (= 4.3.1)
+  - SDWebImage/Core (4.3.1)
+  - SVProgressHUD (2.2.5)
+  - UMCCommon (1.4.1)
+  - UMCShare/Core (6.8.2):
+    - UMCCommon
+  - UMCShare/Social/AlipayShare (6.8.2):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/QQ (6.8.2):
+    - UMCCommon
+    - UMCShare/Core
+    - UMCShare/Social/ReducedQQ
+  - UMCShare/Social/ReducedQQ (6.8.2):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/ReducedSina (6.8.2):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/ReducedWeChat (6.8.2):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/UI (6.8.2):
+    - UMCCommon
+    - UMCShare/Core
+  - WebViewJavascriptBridge (6.0.3)
+  - YYText (1.0.7)
+
+DEPENDENCIES:
+  - AFNetworking (~> 3.0)
+  - BRPickerView
+  - DTCoreText (~> 1.6.21)
+  - DZNEmptyDataSet (~> 1.8.1)
+  - JPush
+  - Masonry
+  - MJExtension (~> 3.0.10)
+  - MJRefresh
+  - ReactiveCocoa (= 2.1.8)
+  - SDCycleScrollView (~> 1.75)
+  - SDWebImage
+  - SVProgressHUD (~> 2.0-beta8)
+  - UMCCommon
+  - UMCShare/Social/AlipayShare
+  - UMCShare/Social/QQ
+  - UMCShare/Social/ReducedSina
+  - UMCShare/Social/ReducedWeChat
+  - UMCShare/UI
+  - WebViewJavascriptBridge (~> 6.0)
+  - YYText
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - AFNetworking
+    - BRPickerView
+    - DTCoreText
+    - DTFoundation
+    - DZNEmptyDataSet
+    - JCore
+    - JPush
+    - Masonry
+    - MJExtension
+    - MJRefresh
+    - ReactiveCocoa
+    - SDCycleScrollView
+    - SDWebImage
+    - SVProgressHUD
+    - UMCCommon
+    - UMCShare
+    - WebViewJavascriptBridge
+    - YYText
+
+SPEC CHECKSUMS:
+  AFNetworking: 8ac6017b94ea105479f7776e5288e48ae9c59bb4
+  BRPickerView: bcf71c838a27490a34a61c0ed5074ef5651b1717
+  DTCoreText: e5d688cffc9f6a61eddd1a4f94e2046851230de3
+  DTFoundation: f03be9fd786f11e505bb8fc44e2a3732bf0917df
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  JCore: f7459c81c135281a874a6beafdd321666adcc834
+  JPush: 9574d072cc37e93fa293ba69b43ce763c440943a
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MJExtension: 5932755f451458eefa24239358817f8d291240c7
+  MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
+  ReactiveCocoa: f89f2e009a87951b50321bf9feb958823fcc617e
+  SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
+  SDWebImage: 09808bac78357b39f8db4ea360c7b5534d785ef4
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  UMCCommon: ed0b882a939c45850f6803a5837698572a3e9b96
+  UMCShare: ab74e3c818cd305846609b15b0daf36872213c28
+  WebViewJavascriptBridge: 7f5bc4d3581e672e8f32bd0f812d54bc69bb8e29
+  YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
+
+PODFILE CHECKSUM: a5fec829b5cc31807a70bf02222d89ab60508446
+
+COCOAPODS: 1.5.0
