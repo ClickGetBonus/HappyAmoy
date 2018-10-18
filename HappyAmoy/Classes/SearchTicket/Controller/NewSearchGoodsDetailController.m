@@ -53,6 +53,8 @@
 /**    collectionView    */
 @property (strong, nonatomic) UICollectionView *collectionView;
 
+@property (assign, nonatomic) BOOL loadFailed;
+
 @end
 
 static NSString *const goodsInfoCellId = @"goodsInfoCellId";
@@ -95,39 +97,46 @@ static NSString *const listCellId = @"listCellId";
     //    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 }
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 #pragma mark - Data
 
 - (void)detailData {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-//    NSInteger itemId = [self.item.id integerValue];
+    //    NSInteger itemId = [self.item.id integerValue];
     parameters[@"id"] = self.itemId;
     parameters[@"userId"] = [LoginUserDefault userDefault].userItem.userId;
     WeakSelf
     [[NetworkSingleton sharedManager] getCoRequestWithUrl:@"/GoodsDetail" parameters:parameters successBlock:^(id response) {
         if ([response[@"code"] integerValue] == 1) {
-            weakSelf.detailItem = [CommodityDetailItem mj_objectWithKeyValues:response[@"data"][@"detail"]];
-            [weakSelf screenShots];
-            //            [weakSelf.buyButton setTitle:[NSString stringWithFormat:@"  ¥ %.2f\n折扣价购买",weakSelf.detailItem.discountPrice] forState:UIControlStateNormal];
-            [weakSelf.buyButton setTitle:[NSString stringWithFormat:@"领券￥%@",weakSelf.detailItem.couponAmount] forState:UIControlStateNormal];
-            weakSelf.cycleScrollView.imageURLStringsGroup = weakSelf.detailItem.imageUrls;
-            [weakSelf.tableView reloadData];
-            if (weakSelf.detailItem.collected == 0) { // 未收藏
-                [weakSelf.collectedButton setImage:ImageWithNamed(@"收藏") forState:UIControlStateNormal];
-            } else { // 已收藏
-                [weakSelf.collectedButton setImage:ImageWithNamed(@"已收藏") forState:UIControlStateNormal];
-            }
-            weakSelf.datasource = [SearchGoodsItem mj_objectArrayWithKeyValuesArray:response[@"data"][@"others"]];
-            [self setupCollectionUI];
             
-            [weakSelf.collectionView reloadData];
+            if ([response[@"status"] integerValue] == 0) {
+                weakSelf.detailItem = [CommodityDetailItem mj_objectWithKeyValues:response[@"data"][@"detail"]];
+                [weakSelf screenShots];
+                //            [weakSelf.buyButton setTitle:[NSString stringWithFormat:@"  ¥ %.2f\n折扣价购买",weakSelf.detailItem.discountPrice] forState:UIControlStateNormal];
+                [weakSelf.buyButton setTitle:[NSString stringWithFormat:@"领券￥%@",weakSelf.detailItem.couponAmount] forState:UIControlStateNormal];
+                weakSelf.cycleScrollView.imageURLStringsGroup = weakSelf.detailItem.imageUrls;
+                [weakSelf.tableView reloadData];
+                if (weakSelf.detailItem.collected == 0) { // 未收藏
+                    [weakSelf.collectedButton setImage:ImageWithNamed(@"收藏") forState:UIControlStateNormal];
+                } else { // 已收藏
+                    [weakSelf.collectedButton setImage:ImageWithNamed(@"已收藏") forState:UIControlStateNormal];
+                }
+                weakSelf.datasource = [SearchGoodsItem mj_objectArrayWithKeyValuesArray:response[@"data"][@"others"]];
+                [self setupCollectionUI];
+                
+                [weakSelf.collectionView reloadData];
+            } else {
+                
+                self.loadFailed = YES;
+            }
+            
         } else {
             [WYProgress showErrorWithStatus:response[@"msg"]];
         }
@@ -220,31 +229,31 @@ static NSString *const listCellId = @"listCellId";
     descLabel.centerX = footerView.centerX;
     descLabel.centerY = AUTOSIZESCALEX(20);
     [self.topView addSubview:descLabel];
-//    [tipsLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerY.equalTo(self.topView).offset(0);
-//        make.left.equalTo(self.topView).offset(AUTOSIZESCALEX(10));
-//    }];
+    //    [tipsLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.centerY.equalTo(self.topView).offset(0);
+    //        make.left.equalTo(self.topView).offset(AUTOSIZESCALEX(10));
+    //    }];
     [WYUtils TextGradientview:descLabel bgVIew:topView gradientColors:@[(id)ColorWithHexString(@"#ffb42b").CGColor, (id)ColorWithHexString(@"#ffb42b").CGColor] gradientStartPoint:CGPointMake(0, 1) endPoint:CGPointMake(1, 1)];
-
-//    UIView *line1 = [[UIView alloc] init];
-//    line1.backgroundColor = SeparatorLineColor;
-//    [self.topView addSubview:line1];
-//
-//    [line1 mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.topView).offset(0);
-//        make.left.right.equalTo(self.topView);
-//        make.height.mas_equalTo(SeparatorLineHeight);
-//    }];
-//
-//    UIView *line2 = [[UIView alloc] init];
-//    line2.backgroundColor = SeparatorLineColor;
-//    [self.topView addSubview:line2];
-//
-//    [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(self.topView).offset(0);
-//        make.left.right.equalTo(self.topView);
-//        make.height.mas_equalTo(SeparatorLineHeight);
-//    }];
+    
+    //    UIView *line1 = [[UIView alloc] init];
+    //    line1.backgroundColor = SeparatorLineColor;
+    //    [self.topView addSubview:line1];
+    //
+    //    [line1 mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.top.equalTo(self.topView).offset(0);
+    //        make.left.right.equalTo(self.topView);
+    //        make.height.mas_equalTo(SeparatorLineHeight);
+    //    }];
+    //
+    //    UIView *line2 = [[UIView alloc] init];
+    //    line2.backgroundColor = SeparatorLineColor;
+    //    [self.topView addSubview:line2];
+    //
+    //    [line2 mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.bottom.equalTo(self.topView).offset(0);
+    //        make.left.right.equalTo(self.topView);
+    //        make.height.mas_equalTo(SeparatorLineHeight);
+    //    }];
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     
@@ -256,7 +265,7 @@ static NSString *const listCellId = @"listCellId";
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame: CGRectMake(0, 0, footerView.width, footerView.height) collectionViewLayout:layout];
     collectionView.delegate = self;
     collectionView.dataSource = self;
-//    collectionView.hidden = YES;
+    //    collectionView.hidden = YES;
     collectionView.emptyDataSetDelegate = self;
     collectionView.emptyDataSetSource = self;
     collectionView.backgroundColor = ViewControllerBackgroundColor;
@@ -267,23 +276,23 @@ static NSString *const listCellId = @"listCellId";
     [footerView addSubview:collectionView];
     self.collectionView = collectionView;
     
-//    WeakSelf
-//    // 下拉刷新
-//    self.collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-//        // 获取数据
-//        [weakSelf loadDataWithPageNo:1];
-//    }];
-//
-//    self.collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-//        // 上拉加载更多
-//        [weakSelf loadDataWithPageNo:weakSelf.pageNo];
-//    }];
+    //    WeakSelf
+    //    // 下拉刷新
+    //    self.collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    //        // 获取数据
+    //        [weakSelf loadDataWithPageNo:1];
+    //    }];
+    //
+    //    self.collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    //        // 上拉加载更多
+    //        [weakSelf loadDataWithPageNo:weakSelf.pageNo];
+    //    }];
     
     self.collectionView.mj_footer.hidden = YES;
-//    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.topView.mas_bottom).offset(AUTOSIZESCALEX(0));
-//        make.left.right.bottom.equalTo(footerView);
-//    }];
+    //    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.top.equalTo(self.topView.mas_bottom).offset(AUTOSIZESCALEX(0));
+    //        make.left.right.bottom.equalTo(footerView);
+    //    }];
     self.collectionView.frame = CGRectMake(0, 30, footerView.width, height -AUTOSIZESCALEX(40));
     self.tableView.tableFooterView = footerView;
 }
@@ -370,18 +379,18 @@ static NSString *const listCellId = @"listCellId";
     shareButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [shareButton setTitleColor:ColorWithHexString(@"#ffffff") forState:UIControlStateNormal];
     [shareButton setBackgroundImage:ImageWithNamed(@"分享好友背景图片") forState:UIControlStateNormal];
-
+    
     shareButton.titleLabel.font = TextFont(13);
     [[shareButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
         WYLog(@"立即推广");
         [LoginUtil loginWithFatherVc:weakSelf completedHandler:^{
             //        [WYProgress showSuccessWithStatus:@"推广成功!"];
-//            http://haomaih5.lucius.cn//#/share?id=xxx&userid=xxx
-//            ShareController *shareVc = [[ShareController alloc] init];
-//            shareVc.item = weakSelf.detailItem;
-//            [weakSelf.navigationController pushViewController:shareVc animated:YES];
+            //            http://haomaih5.lucius.cn//#/share?id=xxx&userid=xxx
+            //            ShareController *shareVc = [[ShareController alloc] init];
+            //            shareVc.item = weakSelf.detailItem;
+            //            [weakSelf.navigationController pushViewController:shareVc animated:YES];
             NSString *userId = [LoginUserDefault userDefault].userItem.userId;
-
+            
             NSString *qrurl = [[NSString alloc] initWithFormat:@"http://haomaih5.lucius.cn//#/share?id=%@&userid=%@", self.itemId,userId];
             
             
@@ -477,7 +486,7 @@ static NSString *const listCellId = @"listCellId";
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return self.loadFailed ? 0 : 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -508,10 +517,10 @@ static NSString *const listCellId = @"listCellId";
         
         return dtCell;
     }
+    
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    
     cell.backgroundColor = QHWhiteColor;
-    
     return cell;
 }
 
@@ -534,8 +543,8 @@ static NSString *const listCellId = @"listCellId";
     }
     //2.设置数据
     //2.1为富文本单元格设置Html数据
-//    NSString *content = @"<p><img src=\"https://img.alicdn.com/imgextra/i4/539549300/O1CN012IZRs4AFutBtAiK_!!539549300.jpg\" height=\"800\" width=\"200\"><p>你好</p></img></p>";
-//    [cell setHTMLString:content];
+    //    NSString *content = @"<p><img src=\"https://img.alicdn.com/imgextra/i4/539549300/O1CN012IZRs4AFutBtAiK_!!539549300.jpg\" height=\"800\" width=\"200\"><p>你好</p></img></p>";
+    //    [cell setHTMLString:content];
     [cell setHTMLString:self.detailItem.content];
     
     //2.2为每个占位图(图片)设置大小，并更新

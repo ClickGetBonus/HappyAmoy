@@ -234,7 +234,7 @@ static NSString *const listCellId = @"listCellId";
 //    detailVc.item = self.datasource[indexPath.row];
 //    [self.navigationController pushViewController:detailVc animated:YES];
     SearchGoodsItem *item = self.datasource[indexPath.row];
-    if ([item.type isEqualToString:@"1"] || [item.type isEqualToString:@"3"]) {
+    if ([item.type isEqualToString:@"1"]) {
         NSString *userId = [LoginUserDefault userDefault].userItem.userId;
         NSInteger viped = [LoginUserDefault userDefault].userItem.viped;
         NSInteger itemId = [item.id integerValue];
@@ -247,7 +247,7 @@ static NSString *const listCellId = @"listCellId";
         //    webVc.title = @"我的钱包";
         [self.navigationController pushViewController:webVc animated:YES];
     }
-    if ([item.type isEqualToString:@"2"]) {
+    if ([item.type isEqualToString:@"2"] || [item.type isEqualToString:@"3"]) {
         NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
         detailVc.itemId = self.datasource[indexPath.row][@"id"];
         [self.navigationController pushViewController:detailVc animated:YES];

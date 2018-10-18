@@ -6,6 +6,10 @@
 //  Copyright © 2018年 apple. All rights reserved.
 //
 
+/*
+ * 已弃用, 现商品详情都使用NewSearchGoodsDetailController
+ */
+
 #import "GoodsDetailController.h"
 #import "MessageNoticeController.h"
 #import "CustomSearchView.h"
