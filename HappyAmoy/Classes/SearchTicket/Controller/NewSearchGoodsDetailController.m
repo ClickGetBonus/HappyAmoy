@@ -116,7 +116,8 @@ static NSString *const listCellId = @"listCellId";
     [[NetworkSingleton sharedManager] getCoRequestWithUrl:@"/GoodsDetail" parameters:parameters successBlock:^(id response) {
         if ([response[@"code"] integerValue] == 1) {
             
-            if ([response[@"status"] integerValue] == 0) {
+            if ([response[@"data"][@"status"] integerValue] == 0) {
+                
                 weakSelf.detailItem = [CommodityDetailItem mj_objectWithKeyValues:response[@"data"][@"detail"]];
                 [weakSelf screenShots];
                 //            [weakSelf.buyButton setTitle:[NSString stringWithFormat:@"  ¥ %.2f\n折扣价购买",weakSelf.detailItem.discountPrice] forState:UIControlStateNormal];
@@ -130,11 +131,21 @@ static NSString *const listCellId = @"listCellId";
                 }
                 weakSelf.datasource = [SearchGoodsItem mj_objectArrayWithKeyValuesArray:response[@"data"][@"others"]];
                 [self setupCollectionUI];
+                [self setupBottomView];
                 
                 [weakSelf.collectionView reloadData];
             } else {
                 
                 self.loadFailed = YES;
+                
+                [self.tableView mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.bottom.equalTo(weakSelf.view).offset(SafeAreaBottomHeight);
+                }];
+                weakSelf.datasource = [SearchGoodsItem mj_objectArrayWithKeyValuesArray:response[@"data"][@"others"]];
+                [self setupNothingView];
+                [self setupCollectionUI];
+                [weakSelf.tableView reloadData];
+                [weakSelf.collectionView reloadData];
             }
             
         } else {
@@ -188,7 +199,6 @@ static NSString *const listCellId = @"listCellId";
         make.bottom.equalTo(weakSelf.view).offset(AUTOSIZESCALEX(-50) - SafeAreaBottomHeight);
     }];
     
-    [self setupBottomView];
     // 顶部分割线
     //    UIView *line = [[UIView alloc] init];
     //    line.backgroundColor = [UIColor lightGrayColor];
@@ -199,6 +209,28 @@ static NSString *const listCellId = @"listCellId";
     //        make.top.equalTo(self.view).offset(kNavHeight);
     //        make.height.mas_equalTo(SeparatorLineHeight);
     //    }];
+}
+
+- (void)setupNothingView {
+    
+    UIView *nothingHeaderView = [[UIView alloc]initWithFrame:CGRectZero];
+    nothingHeaderView.frame = CGRectMake(0, 0, self.view.width, AUTOSIZESCALEY(150));
+    nothingHeaderView.backgroundColor = [UIColor whiteColor];
+   
+    UILabel *descLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, nothingHeaderView.width, AUTOSIZESCALEX(20))];
+    descLabel.text = @"该商品没有优惠券领取";
+    descLabel.textAlignment = NSTextAlignmentCenter;
+    descLabel.font = TextFont(18);
+    [descLabel sizeToFit];
+    descLabel.height = AUTOSIZESCALEX(20);
+    descLabel.centerX = self.view.width/2;
+    descLabel.centerY = nothingHeaderView.height/2;
+    [nothingHeaderView addSubview:descLabel];
+    
+    [WYUtils TextGradientview:descLabel bgVIew:nothingHeaderView gradientColors:@[(id)ColorWithHexString(@"#ffb42b").CGColor, (id)ColorWithHexString(@"#ffb42b").CGColor] gradientStartPoint:CGPointMake(0, 0) endPoint:CGPointMake(20, 20)];
+    
+    
+    self.tableView.tableHeaderView = nothingHeaderView;
 }
 
 - (void)setupCollectionUI {
@@ -374,7 +406,7 @@ static NSString *const listCellId = @"listCellId";
     
     UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
     //    [shareButton setTitle:[NSString stringWithFormat:@"      分享好友\n预估佣金￥%.2f",self.item.mineCommision] forState:UIControlStateNormal];
-    [shareButton setTitle:[NSString stringWithFormat:@"分享好友\n预估麦穗 %.2ld",(long)self.detailItem.mineCommision] forState:UIControlStateNormal];
+    [shareButton setTitle:[NSString stringWithFormat:@"分享好友\n预估麦穗 %@",self.detailItem.mineCommision] forState:UIControlStateNormal];
     shareButton.titleLabel.numberOfLines = 0;
     shareButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [shareButton setTitleColor:ColorWithHexString(@"#ffffff") forState:UIControlStateNormal];
@@ -494,6 +526,7 @@ static NSString *const listCellId = @"listCellId";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     if (indexPath.section == 0) {
         return AUTOSIZESCALEX(200);
     }
@@ -619,7 +652,7 @@ static NSString *const listCellId = @"listCellId";
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (section != 0) {
+    if (section != 0 && !self.loadFailed) {
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, AUTOSIZESCALEX(40))];
         headerView.backgroundColor = QHWhiteColor;
         
@@ -642,6 +675,7 @@ static NSString *const listCellId = @"listCellId";
     } else {
         //        return self.headerView;
     }
+    
     return [[UIView alloc] init];
 }
 
@@ -878,7 +912,9 @@ static NSString *const listCellId = @"listCellId";
                     [bgView.layer renderInContext:context];
                     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
                     UIGraphicsEndImageContext();
-                    
+                    if (!image) {
+                        NSLog(@"就是他!");
+                    }
                     [[LoginUserDefault userDefault].shareImageArray insertObject:image atIndex:0];
                     
                 } else {
@@ -892,7 +928,9 @@ static NSString *const listCellId = @"listCellId";
                     [bgView.layer renderInContext:context];
                     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
                     UIGraphicsEndImageContext();
-                    
+                    if (!image) {
+                        NSLog(@"就是他2!");
+                    }
                     [[LoginUserDefault userDefault].shareImageArray insertObject:image atIndex:0];
                 }
             }];

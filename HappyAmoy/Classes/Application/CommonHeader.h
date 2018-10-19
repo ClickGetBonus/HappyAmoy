@@ -42,7 +42,7 @@
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
 #define SCREEN_FRAME [UIScreen mainScreen].bounds
-#define AUTOSIZESCALEX(x) (x * [[UIScreen mainScreen]bounds].size.width / 375.f)
+#define AUTOSIZESCALEX(x) (x * [UIScreen mainScreen].bounds.size.width / 375.f)
 #define AUTOSIZESCALEY(y) (y * [UIScreen mainScreen].bounds.size.height / 667.f)
 /** Tabbar的高度 */
 #define kTabbar_Bottum_Height 49.f

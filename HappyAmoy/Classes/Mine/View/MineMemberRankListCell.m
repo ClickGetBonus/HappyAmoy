@@ -36,8 +36,11 @@
     [self.bgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.edges.equalTo(self.contentView);
         make.centerX.centerX.equalTo(self.contentView);
-        make.width.equalTo(@AUTOSIZESCALEX(image.size.width));
-        make.height.equalTo(@AUTOSIZESCALEY(image.size.height));
+        NSNumber *sizeWidth = @AUTOSIZESCALEX(image.size.width);
+        make.width.equalTo(sizeWidth);
+        
+        CGFloat sizeHeight = image.size.height/image.size.width*sizeWidth.floatValue;
+        make.height.equalTo(@(sizeHeight));
     }];
 }
 

@@ -8,7 +8,7 @@
 
 #import "WebViewH5Controller.h"
 #import "WebViewJavascriptBridge.h"
-
+#import "WYPhotoLibraryManager.h"
 
 
 @interface WebViewH5Controller () <UIWebViewDelegate>
@@ -83,7 +83,85 @@
             //            responseCallback(@{@"userId": @"123456"});
         }
     }];
-
+    
+    //复制文本
+    [self.bridge registerHandler:@"copyword" handler:^(id data, WVJBResponseCallback responseCallback) {
+        
+        UIPasteboard* pasteboard = [UIPasteboard generalPasteboard];
+        pasteboard.string = (NSString *)data[@"data"];
+        [WYHud showMessage:@"已复制到剪贴板!"];
+        WYLog(@"复制的内容 = %@",(NSString *)data);
+    }];
+    
+    //保存图片
+    [self.bridge registerHandler:@"saveimg" handler:^(id data, WVJBResponseCallback responseCallback) {
+        
+        
+        NSData *imageData = [[NSData alloc] initWithBase64EncodedString:data[@"data"]
+                                                                options:NSDataBase64DecodingIgnoreUnknownCharacters];
+        UIImage *image = [UIImage imageWithData:imageData];
+        [WYPhotoLibraryManager wy_savePhotoImage:image completion:^(UIImage *image, NSError *error) {
+            if (!error) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [WYProgress showSuccessWithStatus:@"保存图片成功!"];
+                });
+            } else {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [WYProgress showSuccessWithStatus:@"保存图片失败!"];
+                });
+            }
+        }];
+    }];
+    
+    
+    //分享图片
+    [self.bridge registerHandler:@"shareimg" handler:^(id data, WVJBResponseCallback responseCallback) {
+        
+        
+        NSInteger type = [data[@"type"] integerValue]; //0微信 1朋友圈
+        NSData *imgData = [[NSData alloc] initWithBase64EncodedString:data[@"data"] options:NSDataBase64DecodingIgnoreUnknownCharacters];
+        UIImage *image = [[UIImage alloc] initWithData:imgData];
+        
+        
+        UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+        // 图片或图文分享
+        UMShareImageObject *shareObject = [UMShareImageObject shareObjectWithTitle:@"" descr:@"" thumImage:image];
+        shareObject.shareImage = image;
+        messageObject.shareObject = shareObject;
+        
+        [[UMSocialManager defaultManager] shareToPlatform:type ==0 ? UMSocialPlatformType_WechatSession : UMSocialPlatformType_WechatTimeLine
+                                            messageObject:messageObject
+                                    currentViewController:self
+                                               completion:^(id result, NSError *error) {
+            
+                                                   [WYProgress showSuccessWithStatus:@"分享成功!"];
+        }];
+    }];
+    
+    
+    //分享文本
+    [self.bridge registerHandler:@"shareword" handler:^(id data, WVJBResponseCallback responseCallback) {
+        
+        NSInteger type = [data[@"type"] integerValue]; //0微信 1朋友圈
+        NSString *word = data[@"data"];
+        
+        UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+        // 图片或图文分享
+        UMShareImageObject *shareObject = [UMShareImageObject shareObjectWithTitle:@"" descr:word thumImage:nil];
+        messageObject.shareObject = shareObject;
+        
+        [[UMSocialManager defaultManager] shareToPlatform:type ==0 ? UMSocialPlatformType_WechatSession : UMSocialPlatformType_WechatTimeLine
+                                            messageObject:messageObject
+                                    currentViewController:self
+                                               completion:^(id result, NSError *error) {
+                                                   
+                                                   [WYProgress showSuccessWithStatus:@"分享成功!"];
+                                               }];
+    }];
+    
+    
+    
+    
     
     self.webView = web;
 

@@ -461,7 +461,7 @@
         [self.ticketButton setTitle:[NSString stringWithFormat:@"%@元券",_searchGoodsItem.quan] forState:UIControlStateNormal];
 //        self.salesCountLabel.text = [NSString stringWithFormat:@"月销 %zd",_searchGoodsItem.sellNum];
         self.salesCountLabel.text = [NSString stringWithFormat:@"月销 %@",searchGoodsItem.volume];
-        self.mineCommisionLabel.text = [NSString stringWithFormat:@"预估麦穗 %.2ld",(long)_searchGoodsItem.maisui];
+        self.mineCommisionLabel.text = [NSString stringWithFormat:@"预估麦穗 %.2f",_searchGoodsItem.maisui];
     } else {
 //        self.ticketTypeLabel.text = @"天猫";
 //        self.ticketTypeLabel.backgroundColor = ColorWithHexString(@"CC0C0C");
@@ -487,17 +487,16 @@
         self.originalPriceLabel.attributedText = attribtStr;
         //        self.discountPriceLabel.text = [NSString stringWithFormat:@"券后价 ¥ %.2f",_item.discountPrice];
         //        [self.ticketButton setTitle:[NSString stringWithFormat:@"%@元券",_item.couponAmount] forState:UIControlStateNormal];
-                self.salesCountLabel.text = [NSString stringWithFormat:@"月销 %zd",searchGoodsItem.volume];
+        self.salesCountLabel.text = [NSString stringWithFormat:@"月销 %@",searchGoodsItem.volume];
         self.salesCountLabel.text = _searchGoodsItem.price_old;
         self.salesCountLabel.textColor = [UIColor redColor];
-        NSInteger mineCommision = _searchGoodsItem.maisui ;
-        if (mineCommision ==0) {
+        if (self.searchGoodsItem.maisui ==0) {
             self.mineCommisionView.hidden = YES;
             self.mineCommisionLabel.hidden = YES;
         }else{
             self.mineCommisionView.hidden = NO;
             self.mineCommisionLabel.hidden = NO;
-            self.mineCommisionLabel.text = [NSString stringWithFormat:@"预估麦穗 %.2ld",(long)mineCommision];
+            self.mineCommisionLabel.text = [NSString stringWithFormat:@"预估麦穗 %.2f", self.searchGoodsItem.maisui];
         }
     }
 }

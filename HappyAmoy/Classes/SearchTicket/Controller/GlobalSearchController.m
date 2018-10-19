@@ -249,10 +249,9 @@ static NSString *const listCellId = @"listCellId";
     }
     if ([item.type isEqualToString:@"2"] || [item.type isEqualToString:@"3"]) {
         NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
-        detailVc.itemId = self.datasource[indexPath.row][@"id"];
+        detailVc.itemId = item.id;
         [self.navigationController pushViewController:detailVc animated:YES];
     }
-
 }
 
 #pragma mark - GlobalSearchListCellDelegate

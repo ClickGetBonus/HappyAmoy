@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SearchGoodsItem : NSObject
 
 @property(nonatomic,copy) NSString *volume;
-@property(nonatomic,assign) NSInteger maisui;
+@property(nonatomic,assign) float maisui;
 @property(nonatomic,copy) NSString *quan;
 @property(nonatomic,copy) NSString *id;
 @property(nonatomic,copy) NSString *price;
