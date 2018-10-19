@@ -9,12 +9,13 @@
 #import "GoodsRankListChildController.h"
 #import "GoodsListCell.h"
 #import "CommodityListItem.h"
-#import "GoodsDetailController.h"
+#import "NewSearchGoodsDetailController.h"
 #import "GoodsRankListCell.h"
 #import "FilterView.h"
 #import "ClassifyOfGoodsListCell.h"
 #import "ClassifyItem.h"
 #import "GoodsListViewController.h"
+#import "CommodityListItem.h"
 
 @interface GoodsRankListChildController () <UITableViewDelegate,UITableViewDataSource,FilterViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,ClassifyOfGoodsListCellDelegate>
 
@@ -270,8 +271,9 @@ static NSString *const rankCellId = @"rankCellId";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == 1) {
-        GoodsDetailController *detailVc = [[GoodsDetailController alloc] init];
-        detailVc.item = self.datasource[indexPath.row];
+        NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
+        CommodityListItem *item = self.datasource[indexPath.row];
+        detailVc.itemId = item.itemId;
         [self.navigationController pushViewController:detailVc animated:YES];
     }
 }

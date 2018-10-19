@@ -11,7 +11,7 @@
 #import "MustBuyListCell.h"
 #import "CommodityListItem.h"
 #import "GoodsListCell.h"
-#import "GoodsDetailController.h"
+#import "NewSearchGoodsDetailController.h"
 
 @interface SearchViewController () <UICollectionViewDataSource,UICollectionViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,SearchViewDelegate>
 
@@ -186,8 +186,9 @@ static NSString *const searchCellId = @"searchCellId";
     WYLog(@"indexPath = %zd",indexPath.row);
     [self.searchView endEditing];
     
-    GoodsDetailController *detailVc = [[GoodsDetailController alloc] init];
-    detailVc.item = self.datasource[indexPath.row];
+    NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
+    CommodityListItem *item = self.datasource[indexPath.row];
+    detailVc.itemId = item.itemId;
     [self.navigationController pushViewController:detailVc animated:YES];
 }
 

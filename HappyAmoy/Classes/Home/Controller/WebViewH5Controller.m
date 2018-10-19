@@ -96,9 +96,10 @@
     //保存图片
     [self.bridge registerHandler:@"saveimg" handler:^(id data, WVJBResponseCallback responseCallback) {
         
-        
-        NSData *imageData = [[NSData alloc] initWithBase64EncodedString:data[@"data"]
-                                                                options:NSDataBase64DecodingIgnoreUnknownCharacters];
+        NSString *imgString = data[@"data"];
+        NSString *base64String = [imgString substringFromIndex:[imgString rangeOfString:@"base64"].location+7];
+        NSData *imageData = [[NSData alloc] initWithBase64EncodedString:base64String
+                                                                options:(NSDataBase64DecodingIgnoreUnknownCharacters)];
         UIImage *image = [UIImage imageWithData:imageData];
         [WYPhotoLibraryManager wy_savePhotoImage:image completion:^(UIImage *image, NSError *error) {
             if (!error) {
@@ -117,9 +118,11 @@
     //分享图片
     [self.bridge registerHandler:@"shareimg" handler:^(id data, WVJBResponseCallback responseCallback) {
         
-        
         NSInteger type = [data[@"type"] integerValue]; //0微信 1朋友圈
-        NSData *imgData = [[NSData alloc] initWithBase64EncodedString:data[@"data"] options:NSDataBase64DecodingIgnoreUnknownCharacters];
+        
+        NSString *imgString = data[@"data"];
+        NSString *base64String = [imgString substringFromIndex:[imgString rangeOfString:@"base64"].location+7];
+        NSData *imgData = [[NSData alloc] initWithBase64EncodedString:base64String options:NSDataBase64DecodingIgnoreUnknownCharacters];
         UIImage *image = [[UIImage alloc] initWithData:imgData];
         
         
@@ -131,10 +134,14 @@
         
         [[UMSocialManager defaultManager] shareToPlatform:type ==0 ? UMSocialPlatformType_WechatSession : UMSocialPlatformType_WechatTimeLine
                                             messageObject:messageObject
-                                    currentViewController:self
-                                               completion:^(id result, NSError *error) {
-            
-                                                   [WYProgress showSuccessWithStatus:@"分享成功!"];
+                                    currentViewController:self completion:^(id result, NSError *error) {
+                                        
+                                        if (!error) {
+//                                            UMSocialShareResponse *response = result;
+                                            [WYProgress showSuccessWithStatus:@"分享成功!"];
+                                        } else {
+                                            [WYProgress showSuccessWithStatus:@"分享时遇到问题!"];
+                                        }
         }];
     }];
     
@@ -146,20 +153,63 @@
         NSString *word = data[@"data"];
         
         UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
-        // 图片或图文分享
-        UMShareImageObject *shareObject = [UMShareImageObject shareObjectWithTitle:@"" descr:word thumImage:nil];
-        messageObject.shareObject = shareObject;
+        messageObject.text = word;
         
         [[UMSocialManager defaultManager] shareToPlatform:type ==0 ? UMSocialPlatformType_WechatSession : UMSocialPlatformType_WechatTimeLine
                                             messageObject:messageObject
                                     currentViewController:self
                                                completion:^(id result, NSError *error) {
                                                    
-                                                   [WYProgress showSuccessWithStatus:@"分享成功!"];
+                                                   if (!error) {
+                                                       [WYProgress showSuccessWithStatus:@"分享成功!"];
+                                                   } else {
+                                                       [WYProgress showSuccessWithStatus:@"分享时遇到问题"];
+                                                   }
                                                }];
     }];
     
     
+    //支付宝支付
+    [self.bridge registerHandler:@"alipayres" handler:^(id data, WVJBResponseCallback responseCallback) {
+        
+        NSLog(@"%@",data);
+//        [MXWechatPayHandler payWithOrder:order amount:amount title:@"赞助好麦" completation:^(BOOL resp) {
+//        }];
+    }];
+    
+    //微信支付
+    [self.bridge registerHandler:@"wxpayres" handler:^(id data, WVJBResponseCallback responseCallback) {
+        
+        NSLog(@"%@",data);
+//        [AliPay payWithOrder:order amount:amount title:@"赞助好麦" completation:^(NSDictionary *resultDic, NSInteger code, NSString *msg) {
+//            WYLog(@"msg = %@",msg);
+//            if (code == 9000) { // 支付成功
+//                [weakSelf paySuccess];
+//            }
+//        }];
+    }];
+    
+    
+    
+    //    // 微信支付
+//    - (void)wxPayWithOrder:(NSString *)order amount:(CGFloat)amount {
+//
+//        [MXWechatPayHandler payWithOrder:order amount:amount title:@"赞助好麦" completation:^(BOOL resp) {
+//
+//        }];
+//    }
+//
+//    // 支付宝支付
+//    - (void)aliPayWithOrder:(NSString *)order amount:(CGFloat)amount {
+//        WeakSelf
+//        [AliPay payWithOrder:order amount:amount title:@"赞助好麦" completation:^(NSDictionary *resultDic, NSInteger code, NSString *msg) {
+//            WYLog(@"msg = %@",msg);
+//            if (code == 9000) { // 支付成功
+//                [weakSelf paySuccess];
+//            }
+//        }];
+//    }
+
     
     
     

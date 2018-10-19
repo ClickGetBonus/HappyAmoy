@@ -118,7 +118,9 @@ static NSString *const listCellId = @"listCellId";
             
             if ([response[@"data"][@"status"] integerValue] == 0) {
                 
+                
                 weakSelf.detailItem = [CommodityDetailItem mj_objectWithKeyValues:response[@"data"][@"detail"]];
+                [self setupBottomView];
                 [weakSelf screenShots];
                 //            [weakSelf.buyButton setTitle:[NSString stringWithFormat:@"  ¥ %.2f\n折扣价购买",weakSelf.detailItem.discountPrice] forState:UIControlStateNormal];
                 [weakSelf.buyButton setTitle:[NSString stringWithFormat:@"领券￥%@",weakSelf.detailItem.couponAmount] forState:UIControlStateNormal];
@@ -131,7 +133,6 @@ static NSString *const listCellId = @"listCellId";
                 }
                 weakSelf.datasource = [SearchGoodsItem mj_objectArrayWithKeyValuesArray:response[@"data"][@"others"]];
                 [self setupCollectionUI];
-                [self setupBottomView];
                 
                 [weakSelf.collectionView reloadData];
             } else {
@@ -443,7 +444,7 @@ static NSString *const listCellId = @"listCellId";
     
     UIButton *buyButton = [UIButton buttonWithType:UIButtonTypeCustom];
     //    [buyButton setTitle:@"  ¥ 88.00\n折扣价购买" forState:UIControlStateNormal];
-    [buyButton setTitle:@"领券￥2" forState:UIControlStateNormal];
+    [buyButton setTitle:@"领券￥" forState:UIControlStateNormal];
     
     buyButton.titleLabel.numberOfLines = 0;
     [buyButton setTitleColor:ColorWithHexString(@"#ffffff") forState:UIControlStateNormal];
@@ -995,9 +996,9 @@ static NSString *const listCellId = @"listCellId";
         //    webVc.title = @"我的钱包";
         [self.navigationController pushViewController:webVc animated:YES];
     }
-    if ([item.type isEqualToString:@"2"]) {
+    if ([item.type isEqualToString:@"2"] || [item.type isEqualToString:@"3"]) {
         NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
-        detailVc.itemId = self.datasource[indexPath.row][@"id"];
+        detailVc.itemId = item.id;
         [self.navigationController pushViewController:detailVc animated:YES];
     }
     

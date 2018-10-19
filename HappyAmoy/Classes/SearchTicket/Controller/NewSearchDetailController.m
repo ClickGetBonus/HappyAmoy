@@ -14,7 +14,7 @@
 #import "PlatfomrCharacterCell.h"
 #import "GoodsListViewController.h"
 #import "BrandAreaController.h"
-#import "GoodsDetailController.h"
+#import "NewSearchGoodsDetailController.h"
 #import "GoodsDetailInfoCell.h"
 #import "GoodsRecommendReasonsCell.h"
 #import "GoodsDetailWebCell.h"

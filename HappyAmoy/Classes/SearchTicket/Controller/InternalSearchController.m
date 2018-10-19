@@ -12,7 +12,7 @@
 #import "BrandSellerListItem.h"
 #import "CommodityListItem.h"
 #import "CommodityCategoriesItem.h"
-#import "GoodsDetailController.h"
+#import "NewSearchGoodsDetailController.h"
 #import "CommoditySpecialCategoriesItem.h"
 
 @interface InternalSearchController () <UICollectionViewDataSource,UICollectionViewDelegate,FilterViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
@@ -215,8 +215,9 @@ static NSString *const listCellId = @"listCellId";
     
     WYLog(@"indexPath = %zd",indexPath.row);
     
-    GoodsDetailController *detailVc = [[GoodsDetailController alloc] init];
-    detailVc.item = self.datasource[indexPath.row];
+    NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
+    CommodityListItem *item = self.datasource[indexPath.row];
+    detailVc.itemId = item.itemId;
     [self.navigationController pushViewController:detailVc animated:YES];
 }
 

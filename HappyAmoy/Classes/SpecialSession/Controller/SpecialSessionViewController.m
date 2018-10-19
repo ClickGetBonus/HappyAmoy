@@ -15,7 +15,7 @@
 #import "GoodsListViewController.h"
 #import "CommodityListItem.h"
 #import "BannerItem.h"
-#import "GoodsDetailController.h"
+#import "NewSearchGoodsDetailController.h"
 #import "WebViewController.h"
 
 #import "BrandTypeCell.h"
@@ -445,8 +445,8 @@ static NSString *const brandSelectionCellId = @"brandSelectionCellId";
 #pragma mark - BrandAreaCellDelegate
 
 - (void)brandAreaCell:(BrandAreaCell *)brandAreaCell didSelectItem:(CommodityListItem *)item {
-    GoodsDetailController *detailVc = [[GoodsDetailController alloc] init];
-    detailVc.item = item;
+    NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
+    detailVc.itemId = item.itemId;
     [self.navigationController pushViewController:detailVc animated:YES];
 }
 
@@ -482,16 +482,16 @@ static NSString *const brandSelectionCellId = @"brandSelectionCellId";
 #pragma mark - BrandImportCellDelegate
 
 - (void)brandImportCell:(BrandImportCell *)brandImportCell didSelectItem:(CommodityListItem *)item {
-    GoodsDetailController *detailVc = [[GoodsDetailController alloc] init];
-    detailVc.item = item;
+    NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
+    detailVc.itemId = item.itemId;
     [self.navigationController pushViewController:detailVc animated:YES];
 }
 
 #pragma mark - BrandSelectionCellDelegate
 
 - (void)brandSelectionCell:(BrandSelectionCell *)brandSelectionCell didSelectItem:(CommodityListItem *)item {
-    GoodsDetailController *detailVc = [[GoodsDetailController alloc] init];
-    detailVc.item = item;
+    NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
+    detailVc.itemId = item.itemId;
     [self.navigationController pushViewController:detailVc animated:YES];
 }
 

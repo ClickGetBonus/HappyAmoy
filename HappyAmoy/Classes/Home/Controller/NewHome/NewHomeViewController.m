@@ -26,6 +26,8 @@
 #import "CommodityBullItem.h"
 #import "LoginUserDefault.h"
 
+
+#import "NewSearchGoodsDetailController.h"
 #import "NewsReportItem.h"
 #import "NewNewsReportCell.h"
 #import "PlatfomrCharacterChildCell.h"
@@ -1192,8 +1194,8 @@ static NSString *const categoriesListCellId = @"categoriesListCellId";
 #pragma mark - BrandSelectionCellDelegate
 
 - (void)brandSelectionCell:(BrandSelectionCell *)brandSelectionCell didSelectItem:(CommodityListItem *)item {
-    GoodsDetailController *detailVc = [[GoodsDetailController alloc] init];
-    detailVc.item = item;
+    NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
+    detailVc.itemId = item.itemId;
     [self.navigationController pushViewController:detailVc animated:YES];
 }
 

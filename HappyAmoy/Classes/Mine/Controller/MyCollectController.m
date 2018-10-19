@@ -9,6 +9,7 @@
 #import "MyCollectController.h"
 #import "GoodsListCell.h"
 #import "CommodityListItem.h"
+#import "NewSearchGoodsDetailController.h"
 #import "GoodsDetailController.h"
 
 @interface MyCollectController () <UICollectionViewDataSource,UICollectionViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,GoodsListCellDelegate>
@@ -164,8 +165,9 @@ static NSString *const listCellId = @"listCellId";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    GoodsDetailController *detailVc = [[GoodsDetailController alloc] init];
-    detailVc.item = self.datasource[indexPath.row];
+    NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
+    CommodityListItem *item = self.datasource[indexPath.row];
+    detailVc.itemId = item.itemId;
     [self.navigationController pushViewController:detailVc animated:YES];
 
 }

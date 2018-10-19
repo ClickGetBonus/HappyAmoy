@@ -9,7 +9,7 @@
 #import "GoodsListChildController.h"
 #import "GoodsListCell.h"
 #import "CommodityListItem.h"
-#import "GoodsDetailController.h"
+#import "NewSearchGoodsDetailController.h"
 #import "BrandSelectionCell.h"
 #import "FilterView.h"
 #import "ClassifyOfGoodsListCell.h"
@@ -360,8 +360,8 @@ static NSString *const goodsCellId = @"goodsCellId";
 #pragma mark - BrandSelectionCellDelegate
 
 - (void)brandSelectionCell:(BrandSelectionCell *)brandSelectionCell didSelectItem:(CommodityListItem *)item {
-    GoodsDetailController *detailVc = [[GoodsDetailController alloc] init];
-    detailVc.item = item;
+    NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
+    detailVc.itemId = item.itemId;
     [self.navigationController pushViewController:detailVc animated:YES];
 }
 

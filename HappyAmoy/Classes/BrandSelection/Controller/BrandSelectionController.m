@@ -9,6 +9,7 @@
 #import "BrandSelectionController.h"
 #import "SpecialSectionHeaderView.h"
 #import "TodayRecommendOfSpecialCell.h"
+#import "NewSearchGoodsDetailController.h"
 
 #import "BrandAreaCell.h"
 #import "MustBuyListCell.h"
@@ -395,8 +396,9 @@ static NSString *const brandSelectionCellId = @"brandSelectionCellId";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 3) {
-        GoodsDetailController *detailVc = [[GoodsDetailController alloc] init];
-        detailVc.item = self.ppjxCommodityListArray[indexPath.row];;
+        NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
+        CommodityListItem *item = self.ppjxCommodityListArray[indexPath.row];
+        detailVc.itemId = item.itemId;
         [self.navigationController pushViewController:detailVc animated:YES];
     }
 }
@@ -490,16 +492,16 @@ static NSString *const brandSelectionCellId = @"brandSelectionCellId";
 #pragma mark - NewBrandImportCellDelegate
 
 - (void)newBrandImportCell:(NewBrandImportCell *)newBrandImportCell didSelectItem:(CommodityListItem *)item {
-    GoodsDetailController *detailVc = [[GoodsDetailController alloc] init];
-    detailVc.item = item;
+    NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
+    detailVc.itemId = item.itemId;
     [self.navigationController pushViewController:detailVc animated:YES];
 }
 
 #pragma mark - BrandSelectionCellDelegate
 
 - (void)brandSelectionCell:(BrandSelectionCell *)brandSelectionCell didSelectItem:(CommodityListItem *)item {
-    GoodsDetailController *detailVc = [[GoodsDetailController alloc] init];
-    detailVc.item = item;
+    NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
+    detailVc.itemId = item.itemId;
     [self.navigationController pushViewController:detailVc animated:YES];
 }
 

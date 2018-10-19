@@ -9,7 +9,7 @@
 #import "RecentlyBrowserController.h"
 #import "GoodsListCell.h"
 #import "CommodityListItem.h"
-#import "GoodsDetailController.h"
+#import "NewSearchGoodsDetailController.h"
 
 @interface RecentlyBrowserController () <UICollectionViewDataSource,UICollectionViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 
@@ -149,8 +149,9 @@ static NSString *const listCellId = @"listCellId";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    GoodsDetailController *detailVc = [[GoodsDetailController alloc] init];
-    detailVc.item = self.datasource[indexPath.row];
+    NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
+    CommodityListItem *item = self.datasource[indexPath.row];
+    detailVc.itemId = item.itemId;
     [self.navigationController pushViewController:detailVc animated:YES];
 
 }

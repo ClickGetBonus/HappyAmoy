@@ -10,7 +10,8 @@
 #import "BrandAreaCell.h"
 #import "BrandSellerListItem.h"
 #import "GoodsListViewController.h"
-#import "GoodsDetailController.h"
+#import "NewSearchGoodsDetailController.h"
+#import "CommodityListItem.h"
 
 @interface BrandAreaController () <UITableViewDelegate,UITableViewDataSource,BrandAreaCellDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 
@@ -206,8 +207,8 @@ static NSString *const brandCellId = @"brandCellId";
 
 - (void)brandAreaCell:(BrandAreaCell *)brandAreaCell didSelectItem:(CommodityListItem *)item {
     
-    GoodsDetailController *detailVc = [[GoodsDetailController alloc] init];
-    detailVc.item = item;
+    NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
+    detailVc.itemId = item.itemId;
     [self.navigationController pushViewController:detailVc animated:YES];
     
 }
