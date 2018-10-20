@@ -61,13 +61,13 @@
     // OC端通过responseCallback回调JS端，JS就可以得到所需要的数据
     [self.bridge registerHandler:@"back" handler:^(id data, WVJBResponseCallback responseCallback) {
         NSLog(@"js call back, data from js is %@", data);
-       
+        
         [self.navigationController popViewControllerAnimated:YES];
         
         
         if (responseCallback) {
             // 反馈给JS
-//            responseCallback(@{@"userId": @"123456"});
+            //            responseCallback(@{@"userId": @"123456"});
         }
     }];
     [self.bridge registerHandler:@"download" handler:^(id data, WVJBResponseCallback responseCallback) {
@@ -137,12 +137,12 @@
                                     currentViewController:self completion:^(id result, NSError *error) {
                                         
                                         if (!error) {
-//                                            UMSocialShareResponse *response = result;
+                                            //                                            UMSocialShareResponse *response = result;
                                             [WYProgress showSuccessWithStatus:@"分享成功!"];
                                         } else {
                                             [WYProgress showSuccessWithStatus:@"分享时遇到问题!"];
                                         }
-        }];
+                                    }];
     }];
     
     
@@ -170,51 +170,71 @@
     
     
     //支付宝支付
-    [self.bridge registerHandler:@"alipayres" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridge registerHandler:@"aliPay" handler:^(id data, WVJBResponseCallback responseCallback) {
         
         NSLog(@"%@",data);
-//        [MXWechatPayHandler payWithOrder:order amount:amount title:@"赞助好麦" completation:^(BOOL resp) {
-//        }];
+        NSString *orderNum = data[@"order_no"];
+        float orderAmout = [data[@"order_amount"] floatValue];
+        
+        [AliPay payWithOrder:orderNum
+                      amount:orderAmout
+                       title:[NSString stringWithFormat:@"订单支付:%@",orderNum]
+                completation:^(NSDictionary *resultDic, NSInteger code, NSString *msg) {
+                    WYLog(@"msg = %@",msg);
+                    if (code == 9000) { // 支付成功
+                        [WYProgress showSuccessWithStatus:@"支付成功"];
+                    }
+                }];
+        
+        
     }];
     
     //微信支付
-    [self.bridge registerHandler:@"wxpayres" handler:^(id data, WVJBResponseCallback responseCallback) {
+    [self.bridge registerHandler:@"weixinPay" handler:^(id data, WVJBResponseCallback responseCallback) {
         
         NSLog(@"%@",data);
-//        [AliPay payWithOrder:order amount:amount title:@"赞助好麦" completation:^(NSDictionary *resultDic, NSInteger code, NSString *msg) {
-//            WYLog(@"msg = %@",msg);
-//            if (code == 9000) { // 支付成功
-//                [weakSelf paySuccess];
-//            }
-//        }];
+        NSString *orderNum = data[@"order_no"];
+        float orderAmout = [data[@"order_amount"] floatValue];
+        
+        
+        [MXWechatPayHandler payWithOrder:orderNum
+                                  amount:orderAmout
+                                   title:[NSString stringWithFormat:@"订单支付:%@",orderNum]
+                            completation:^(BOOL resp) {
+                                
+                                if (resp) { // 支付成功
+                                    [WYProgress showSuccessWithStatus:@"支付成功"];
+                                }
+                                
+                            }];
     }];
     
     
     
     //    // 微信支付
-//    - (void)wxPayWithOrder:(NSString *)order amount:(CGFloat)amount {
-//
-//        [MXWechatPayHandler payWithOrder:order amount:amount title:@"赞助好麦" completation:^(BOOL resp) {
-//
-//        }];
-//    }
-//
-//    // 支付宝支付
-//    - (void)aliPayWithOrder:(NSString *)order amount:(CGFloat)amount {
-//        WeakSelf
-//        [AliPay payWithOrder:order amount:amount title:@"赞助好麦" completation:^(NSDictionary *resultDic, NSInteger code, NSString *msg) {
-//            WYLog(@"msg = %@",msg);
-//            if (code == 9000) { // 支付成功
-//                [weakSelf paySuccess];
-//            }
-//        }];
-//    }
-
+    //    - (void)wxPayWithOrder:(NSString *)order amount:(CGFloat)amount {
+    //
+    //        [MXWechatPayHandler payWithOrder:order amount:amount title:@"赞助好麦" completation:^(BOOL resp) {
+    //
+    //        }];
+    //    }
+    //
+    //    // 支付宝支付
+    //    - (void)aliPayWithOrder:(NSString *)order amount:(CGFloat)amount {
+    //        WeakSelf
+    //        [AliPay payWithOrder:order amount:amount title:@"赞助好麦" completation:^(NSDictionary *resultDic, NSInteger code, NSString *msg) {
+    //            WYLog(@"msg = %@",msg);
+    //            if (code == 9000) { // 支付成功
+    //                [weakSelf paySuccess];
+    //            }
+    //        }];
+    //    }
+    
     
     
     
     self.webView = web;
-
+    
 }
 
 

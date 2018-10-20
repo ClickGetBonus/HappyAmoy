@@ -12,6 +12,7 @@
 #import "WYNavigationController.h"
 #import "PushMessageDetailController.h"
 #import "WYUMShareMnager.h"
+#import "PastePopupView.h"
 #import <UMShare/UMShare.h>
 // 引入JPush功能所需头文件
 #import "JPUSHService.h"
@@ -37,7 +38,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
+    
     // 配置崩溃信息的捕捉
     [[QHCrashManager manager] configureCrash];
     // 配置阿里百川
@@ -55,10 +56,10 @@
     
     self.window.backgroundColor = QHWhiteColor;
     
-//    LoginViewController *loginVc = [[LoginViewController alloc] init];
-//    WYNavigationController *nav = [[WYNavigationController alloc] initWithRootViewController:loginVc];
+    //    LoginViewController *loginVc = [[LoginViewController alloc] init];
+    //    WYNavigationController *nav = [[WYNavigationController alloc] initWithRootViewController:loginVc];
     self.window.rootViewController = [QHCheckVersion checkVersionWithOptions:launchOptions];;
-
+    
     [self.window makeKeyAndVisible];
     
     return YES;
@@ -79,13 +80,13 @@
     
     // 配置全局的淘客参数
     //如果没有阿里妈妈的淘客账号,setTaokeParams函数需要调用
-//    AlibcTradeTaokeParams *taokeParams = [[AlibcTradeTaokeParams alloc] init];
-//    taokeParams.pid = @"mm_XXXXX"; //mm_XXXXX为你自己申请的阿里妈妈淘客pid
-//    [[AlibcTradeSDK sharedInstance] setTaokeParams:taokeParams];
+    //    AlibcTradeTaokeParams *taokeParams = [[AlibcTradeTaokeParams alloc] init];
+    //    taokeParams.pid = @"mm_XXXXX"; //mm_XXXXX为你自己申请的阿里妈妈淘客pid
+    //    [[AlibcTradeSDK sharedInstance] setTaokeParams:taokeParams];
     
     //设置全局的app标识，在电商模块里等同于isv_code
     //没有申请过isv_code的接入方,默认不需要调用该函数
-//    [[AlibcTradeSDK sharedInstance] setISVCode:@"your_isv_code"];
+    //    [[AlibcTradeSDK sharedInstance] setISVCode:@"your_isv_code"];
     
     // 设置全局配置，是否强制使用h5
     [[AlibcTradeSDK sharedInstance] setIsForceH5:NO];
@@ -193,15 +194,15 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     // 在线点击推送执行的方法
     UIViewController *currentVc = [NSString wy_getCurrentVC];
-
+    
     PushMessageDetailController *pushVc = [[PushMessageDetailController alloc] init];
-
+    
     UIApplication *application = [UIApplication sharedApplication];
     [application setApplicationIconBadgeNumber:0];
-
-//    if([currentVc isKindOfClass:[LoginViewController class]] || [currentVc isKindOfClass:[CKRegisterViewController class]] || [currentVc isKindOfClass:[CKForgetPasswordController class]]) {
-//        return;
-//    }
+    
+    //    if([currentVc isKindOfClass:[LoginViewController class]] || [currentVc isKindOfClass:[CKRegisterViewController class]] || [currentVc isKindOfClass:[CKForgetPasswordController class]]) {
+    //        return;
+    //    }
     [currentVc.navigationController pushViewController:pushVc animated:YES];
 }
 
@@ -242,11 +243,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             // 其他如支付等SDK的回调
             WYLog(@"9.0以后    ,   URL = %@",url);
             // 处理第三方分享、支付结果回调
-//            [self handleThirdShareAndPayCallBack:url];
+            //            [self handleThirdShareAndPayCallBack:url];
         }
     }
     [self handleThirdShareAndPayCallBack:url];
-
+    
     return YES;
 }
 
@@ -262,11 +263,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         if (!result) {
             // 其他如支付等SDK的回调
             // 处理第三方分享、支付结果回调
-//            [self handleThirdShareAndPayCallBack:url];
+            //            [self handleThirdShareAndPayCallBack:url];
         }
     }
     [self handleThirdShareAndPayCallBack:url];
-
+    
     return YES;
 }
 
@@ -277,10 +278,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         // 其他如支付等SDK的回调
         WYLog(@"9.0以前的另一个处理方法吗   ,   URL = %@",url);
         // 处理第三方分享、支付结果回调
-//        [self handleThirdShareAndPayCallBack:url];
+        //        [self handleThirdShareAndPayCallBack:url];
     }
     [self handleThirdShareAndPayCallBack:url];
-
+    
     return YES;
 }
 
@@ -297,11 +298,40 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
 // APP将要从后台返回，第一次打开的时候不会调用，只有从后台切换到前台的时候才会调用
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+    
+    
+    //检查粘贴板的内容是否需要显示弹窗
+    UIPasteboard *board = [UIPasteboard generalPasteboard];
+    NSString *pasteString = board.string;
+    [[NetworkSingleton sharedManager] getCoRequestWithUrl:@"/ClipboardSearch"
+                                               parameters:@{@"keyword" : pasteString}
+                                             successBlock:^(id response) {
+                                                 
+                                                 if ([response[@"code"] integerValue] == 1) {
+                                                     
+                                                     NSInteger status = [response[@"data"][@"status"] integerValue];
+                                                     if (status == -1) {
+                                                         //不需要做响应
+                                                     } else if (status == 0) {
+                                                         //跳转到商品详情页
+                                                         [PastePopupView showByType:status data:response[@"data"][@"info"]];
+                                                         
+                                                     } else if (status == 1) {
+                                                         //跳转到搜索结果页
+                                                         [PastePopupView showByType:status data:response[@"data"][@"info"]];
+                                                         
+                                                     }
+                                                 }
+                                             } failureBlock:^(NSString *error) {
+                                                 
+                                             }];
+    
 }
 
 #pragma mark - APP进入活跃状态，App 第一次打开的时候也会调用
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    
+    
     // 消息角标设置为 0
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     WYLog(@"角标设置成功!");

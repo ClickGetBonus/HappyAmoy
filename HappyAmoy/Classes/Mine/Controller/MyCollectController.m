@@ -8,7 +8,7 @@
 
 #import "MyCollectController.h"
 #import "GoodsListCell.h"
-#import "CommodityListItem.h"
+#import "SearchGoodsItem.h"
 #import "NewSearchGoodsDetailController.h"
 #import "GoodsDetailController.h"
 
@@ -110,19 +110,20 @@ static NSString *const listCellId = @"listCellId";
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     
-    parameters[@"userId"] = [LoginUserDefault userDefault].userItem.userId;
+    parameters[@"userid"] = [LoginUserDefault userDefault].userItem.userId;
     parameters[@"page"] = [NSString stringWithFormat:@"%zd",pageNo];
     parameters[@"size"] = [NSString stringWithFormat:@"%zd",PageSize];;
-
-    [[NetworkSingleton sharedManager] getRequestWithUrl:@"/personal/collections" parameters:parameters successBlock:^(id response) {
-        if ([response[@"code"] integerValue] == RequestSuccess) {
+    
+    
+    [[NetworkSingleton sharedManager] getCoRequestWithUrl:@"/collections" parameters:parameters successBlock:^(id response) {
+        if ([response[@"code"] integerValue] == 1) {
             if (pageNo == 1) {
                 weakSelf.pageNo = 1;
-                weakSelf.datasource = [CommodityListItem mj_objectArrayWithKeyValuesArray:response[@"data"][@"datas"]];
+                weakSelf.datasource = [SearchGoodsItem mj_objectArrayWithKeyValuesArray:response[@"data"]];
             } else {
-                [weakSelf.datasource addObjectsFromArray:[CommodityListItem mj_objectArrayWithKeyValuesArray:response[@"data"][@"datas"]]];
+                [weakSelf.datasource addObjectsFromArray:[SearchGoodsItem mj_objectArrayWithKeyValuesArray:response[@"data"]]];
             }
-            if ([response[@"data"][@"datas"] count] == 0) {
+            if ([response[@"data"] count] == 0) {
                 [weakSelf.collectionView.mj_footer endRefreshingWithNoMoreData];
             } else {
                 if ((weakSelf.datasource.count % PageSize != 0) || weakSelf.datasource.count == 0) { // 有余数说明没有下一页了
@@ -144,7 +145,7 @@ static NSString *const listCellId = @"listCellId";
     } failureBlock:^(NSString *error) {
         [weakSelf.collectionView.mj_header endRefreshing];
         [weakSelf.collectionView.mj_footer endRefreshing];
-    } shouldDismissHud:NO];
+    }];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -166,8 +167,8 @@ static NSString *const listCellId = @"listCellId";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
     NewSearchGoodsDetailController *detailVc = [[NewSearchGoodsDetailController alloc] init];
-    CommodityListItem *item = self.datasource[indexPath.row];
-    detailVc.itemId = item.itemId;
+    SearchGoodsItem *item = self.datasource[indexPath.row];
+    detailVc.itemId = item.id;
     [self.navigationController pushViewController:detailVc animated:YES];
 
 }
@@ -251,7 +252,7 @@ static NSString *const listCellId = @"listCellId";
     
     WeakSelf
     
-    [[NetworkSingleton sharedManager] postRequestWithUrl:[NSString stringWithFormat:@"/personal/collection/%@/delete",item.currentId] parameters:parameters successBlock:^(id response) {
+    [[NetworkSingleton sharedManager] postRequestWithUrl:[NSString stringWithFormat:@"/personal/collection/%@/delete",item.id] parameters:parameters successBlock:^(id response) {
         if ([response[@"code"] integerValue] == RequestSuccess) {
             [WYProgress showSuccessWithStatus:@"取消收藏成功!"];
             [weakSelf.datasource removeObject:item];

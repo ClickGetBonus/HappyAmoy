@@ -385,6 +385,8 @@
 		2B4EA9912159C479000F5DE1 /* SearchImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B4EA9902159C479000F5DE1 /* SearchImageCell.m */; };
 		2BA20D0221589A4F00B8BB26 /* HistorySearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA20D0121589A4F00B8BB26 /* HistorySearchCell.m */; };
 		2BA78220215A03B7003F78D0 /* SearchDataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA7821F215A03B7003F78D0 /* SearchDataItem.m */; };
+		3F3F6D49217A3D4E00DB5C09 /* PastePopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F3F6D48217A3D4E00DB5C09 /* PastePopupView.m */; };
+		3F3F6D4E217A51B200DB5C09 /* PasteResponseItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F3F6D4D217A51B200DB5C09 /* PasteResponseItem.m */; };
 		6E4FB3A82153D482002E84F9 /* WebViewH5Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E4FB3A62153D482002E84F9 /* WebViewH5Controller.m */; };
 		8882851521718DC700367419 /* NewSearchGoodsDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8882851421718DC700367419 /* NewSearchGoodsDetailController.m */; };
 		888B2056216F8FF1005A0903 /* SearchGoodsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 888B2055216F8FF1005A0903 /* SearchGoodsItem.m */; };
@@ -1200,6 +1202,10 @@
 		2BA7821E215A03B7003F78D0 /* SearchDataItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchDataItem.h; sourceTree = "<group>"; };
 		2BA7821F215A03B7003F78D0 /* SearchDataItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchDataItem.m; sourceTree = "<group>"; };
 		2C27EE2D5D364E38D26B9D2A /* Pods-HappyAmoy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HappyAmoy.release.xcconfig"; path = "Pods/Target Support Files/Pods-HappyAmoy/Pods-HappyAmoy.release.xcconfig"; sourceTree = "<group>"; };
+		3F3F6D47217A3D4E00DB5C09 /* PastePopupView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PastePopupView.h; sourceTree = "<group>"; };
+		3F3F6D48217A3D4E00DB5C09 /* PastePopupView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PastePopupView.m; sourceTree = "<group>"; };
+		3F3F6D4C217A51B200DB5C09 /* PasteResponseItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PasteResponseItem.h; sourceTree = "<group>"; };
+		3F3F6D4D217A51B200DB5C09 /* PasteResponseItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PasteResponseItem.m; sourceTree = "<group>"; };
 		6E4FB3A62153D482002E84F9 /* WebViewH5Controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebViewH5Controller.m; path = HappyAmoy/Classes/Home/Controller/WebViewH5Controller.m; sourceTree = SOURCE_ROOT; };
 		6E4FB3A72153D482002E84F9 /* WebViewH5Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebViewH5Controller.h; path = HappyAmoy/Classes/Home/Controller/WebViewH5Controller.h; sourceTree = SOURCE_ROOT; };
 		8882851321718DC700367419 /* NewSearchGoodsDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewSearchGoodsDetailController.h; sourceTree = "<group>"; };
@@ -1935,6 +1941,8 @@
 				18DA3C5F20FEF6E200BD8C2E /* NewsReportItem.m */,
 				2B3DEA792157277400362C45 /* CommodityBullItem.h */,
 				2B3DEA7A2157277400362C45 /* CommodityBullItem.m */,
+				3F3F6D4C217A51B200DB5C09 /* PasteResponseItem.h */,
+				3F3F6D4D217A51B200DB5C09 /* PasteResponseItem.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2510,6 +2518,8 @@
 				1828855C2101BFED00656E09 /* MineThirdSectionChildCell.m */,
 				1828855E2101C1A500656E09 /* MineFourthSectionCell.h */,
 				1828855F2101C1A500656E09 /* MineFourthSectionCell.m */,
+				3F3F6D47217A3D4E00DB5C09 /* PastePopupView.h */,
+				3F3F6D48217A3D4E00DB5C09 /* PastePopupView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2517,13 +2527,13 @@
 		18EAEAED2080D5A800A71674 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				18EAEB442080D66B00A71674 /* HappyAmoy.pch */,
 				18EAEB3F2080D61E00A71674 /* AppDelegate.h */,
 				18EAEB3D2080D61E00A71674 /* AppDelegate.m */,
 				18EAEB3E2080D61E00A71674 /* Info.plist */,
 				18EAEB402080D61E00A71674 /* main.m */,
 				18EAEB452080D69000A71674 /* ClassHeader.h */,
 				18EAEB462080D69100A71674 /* CommonHeader.h */,
-				18EAEB442080D66B00A71674 /* HappyAmoy.pch */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -3022,6 +3032,7 @@
 				182D621C21058CB9009BD60C /* GroupBuyDetailItem.m in Sources */,
 				182DF21020F5D016002CFE36 /* DiscoveryController.m in Sources */,
 				1840626020A3FB9A00894F87 /* LoginUtil.m in Sources */,
+				3F3F6D49217A3D4E00DB5C09 /* PastePopupView.m in Sources */,
 				1821EB9A2089BBCB00659593 /* PersonalEditCell.m in Sources */,
 				1815FEC72108DC67005BD839 /* GlobalSearchController.m in Sources */,
 				18EAEAFB2080D5A800A71674 /* NSBundle+TZImagePicker.m in Sources */,
@@ -3077,6 +3088,7 @@
 				18241AEA20F90AE000798BAD /* ExchangeSuccessView.m in Sources */,
 				18E83D7B20850CF300C20014 /* GoodsListCell.m in Sources */,
 				1840624B20A310C800894F87 /* QHCheckVersion.m in Sources */,
+				3F3F6D4E217A51B200DB5C09 /* PasteResponseItem.m in Sources */,
 				1829A5F82104DB280046E608 /* NewSearchViewController.m in Sources */,
 				182B168920FDFF6300B46A55 /* ShareMakeMoneyController.m in Sources */,
 				182885542101AE1D00656E09 /* MineFirstSectionCell.m in Sources */,

@@ -17,6 +17,7 @@
 #import "ClassifyController.h"
 #import "NewHomeViewController.h"
 #import "BrandSelectionController.h"
+#import "PastePopupView.h"
 
 @interface WYTabBarController ()
 
@@ -67,6 +68,37 @@
     // 设置tabbar顶部黑线
     [self setupTabbarShadowImage];
     
+    [self checkPasteBoard];
+}
+
+
+#pragma mark - 检查粘贴板的内容是否需要显示弹窗
+- (void)checkPasteBoard {
+    
+    UIPasteboard *board = [UIPasteboard generalPasteboard];
+    NSString *pasteString = board.string;
+    [[NetworkSingleton sharedManager] getCoRequestWithUrl:@"/ClipboardSearch"
+                                               parameters:@{@"keyword" : pasteString}
+                                             successBlock:^(id response) {
+                                                 
+                                                 if ([response[@"code"] integerValue] == 1) {
+                                                     
+                                                     NSInteger status = [response[@"data"][@"status"] integerValue];
+                                                     if (status == -1) {
+                                                         //不需要做响应
+                                                     } else if (status == 0) {
+                                                         //跳转到商品详情页
+                                                         [PastePopupView showByType:status data:response[@"data"][@"info"]];
+                                                         
+                                                     } else if (status == 1) {
+                                                         //跳转到搜索结果页
+                                                         [PastePopupView showByType:status data:response[@"data"][@"info"]];
+                                                         
+                                                     }
+                                                 }
+                                             } failureBlock:^(NSString *error) {
+                                                 
+                                             }];
 }
 
 #pragma mark - 设置tabbar顶部黑线

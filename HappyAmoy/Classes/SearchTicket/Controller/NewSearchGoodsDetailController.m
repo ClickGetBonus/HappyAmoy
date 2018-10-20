@@ -126,7 +126,8 @@ static NSString *const listCellId = @"listCellId";
                 [weakSelf.buyButton setTitle:[NSString stringWithFormat:@"领券￥%@",weakSelf.detailItem.couponAmount] forState:UIControlStateNormal];
                 weakSelf.cycleScrollView.imageURLStringsGroup = weakSelf.detailItem.imageUrls;
                 [weakSelf.tableView reloadData];
-                if (weakSelf.detailItem.collected == 0) { // 未收藏
+                NSInteger collected = weakSelf.detailItem.collected;
+                if (collected == 0) { // 未收藏
                     [weakSelf.collectedButton setImage:ImageWithNamed(@"收藏") forState:UIControlStateNormal];
                 } else { // 已收藏
                     [weakSelf.collectedButton setImage:ImageWithNamed(@"已收藏") forState:UIControlStateNormal];
@@ -386,7 +387,7 @@ static NSString *const listCellId = @"listCellId";
                     [WYProgress showErrorWithStatus:response[@"msg"]];
                 }
             } failureBlock:^(NSString *error) {
-                
+                NSLog(@"%@",error);
             }];
         }];
     }];
@@ -913,9 +914,7 @@ static NSString *const listCellId = @"listCellId";
                     [bgView.layer renderInContext:context];
                     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
                     UIGraphicsEndImageContext();
-                    if (!image) {
-                        NSLog(@"就是他!");
-                    }
+                    
                     [[LoginUserDefault userDefault].shareImageArray insertObject:image atIndex:0];
                     
                 } else {
@@ -929,9 +928,7 @@ static NSString *const listCellId = @"listCellId";
                     [bgView.layer renderInContext:context];
                     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
                     UIGraphicsEndImageContext();
-                    if (!image) {
-                        NSLog(@"就是他2!");
-                    }
+                    
                     [[LoginUserDefault userDefault].shareImageArray insertObject:image atIndex:0];
                 }
             }];

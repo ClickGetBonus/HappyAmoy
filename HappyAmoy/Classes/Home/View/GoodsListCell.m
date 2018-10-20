@@ -266,13 +266,13 @@
     _item = item;
     if (_item) {
         //        [self.iconImageView wy_setImageWithUrlString:_item.iconUrl placeholderImage:PlaceHolderMainImage];
-
+        
         [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:_item.iconUrl] placeholderImage:PlaceHolderMainImage];
 //        self.titleLabel.text = [NSString stringWithFormat:@"          %@",_item.name];
         NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString: [NSString stringWithFormat:@"          %@",_item.name]];
         text.yy_lineSpacing = AUTOSIZESCALEX(5);
         self.titleLabel.attributedText = text;
-
+        
         // 宝贝类型，1-淘宝 2-天猫
         if (_item.type == 1) {
             self.ticketTypeLabel.text = @"淘宝";
