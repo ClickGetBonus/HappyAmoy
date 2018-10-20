@@ -11,6 +11,7 @@
 @class CommodityListItem;
 @class GoodsListCell;
 @class TaoBaoSearchItem;
+@class SearchGoodsItem;
 
 @protocol GoodsListCellDelegate <NSObject>
 
@@ -18,6 +19,7 @@
 
 - (void)goodsListCell:(GoodsListCell *)goodsListCell didPlayVideo:(CommodityListItem *)item;
 - (void)goodsListCell:(GoodsListCell *)goodsListCell didCancelCollected:(CommodityListItem *)item;
+- (void)goodsListCell:(GoodsListCell *)goodsListCell didCancelSearchGoodsCollected:(SearchGoodsItem *)item;
 
 @end
 
@@ -36,5 +38,9 @@
 
 /**    淘宝客全局搜索的数据模型    */
 @property(nonatomic,strong) TaoBaoSearchItem *searchItem;
+
+/**    搜索商品的数据模型    */
+@property(nonatomic,strong) SearchGoodsItem *searchGoodsItem;
+
 
 @end

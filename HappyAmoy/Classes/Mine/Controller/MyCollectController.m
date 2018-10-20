@@ -160,7 +160,7 @@ static NSString *const listCellId = @"listCellId";
     GoodsListCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:listCellId forIndexPath:indexPath];
     cell.isCollected = YES;
     cell.delegate = self;
-    cell.item = self.datasource[indexPath.row];
+    cell.searchGoodsItem = self.datasource[indexPath.row];
     return cell;
 }
 
@@ -245,11 +245,11 @@ static NSString *const listCellId = @"listCellId";
 
 #pragma mark - GoodsListCellDelegate
 // 取消收藏
-- (void)goodsListCell:(id)goodsListCell didCancelCollected:(CommodityListItem *)item {
+- (void)goodsListCell:(id)goodsListCell didCancelSearchGoodsCollected:(SearchGoodsItem *)item {
     WYLog(@"取消收藏");
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    
+
     WeakSelf
     
     [[NetworkSingleton sharedManager] postRequestWithUrl:[NSString stringWithFormat:@"/personal/collection/%@/delete",item.id] parameters:parameters successBlock:^(id response) {
@@ -261,7 +261,7 @@ static NSString *const listCellId = @"listCellId";
             [WYProgress showErrorWithStatus:@"取消收藏失败!"];
         }
     } failureBlock:^(NSString *error) {
-        
+
     }];
 }
 

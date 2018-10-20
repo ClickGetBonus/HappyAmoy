@@ -9,6 +9,7 @@
 #import "GoodsListCell.h"
 #import "CommodityListItem.h"
 #import "TaoBaoSearchItem.h"
+#import "SearchGoodsItem.h"
 
 @interface GoodsListCell()
 @property(nonatomic, strong) UIImageView *mineCommisionBg;
@@ -101,6 +102,9 @@
     [[collectedButton rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(UIButton *sender) {
         if ([weakSelf.delegate respondsToSelector:@selector(goodsListCell:didCancelCollected:)]) {
             [weakSelf.delegate goodsListCell:weakSelf didCancelCollected:weakSelf.item];
+        }
+        if ([weakSelf.delegate respondsToSelector:@selector(goodsListCell:didCancelSearchGoodsCollected:)]) {
+            [weakSelf.delegate goodsListCell:weakSelf didCancelSearchGoodsCollected:weakSelf.searchGoodsItem];
         }
     }];
     [self.contentView addSubview:collectedButton];
@@ -288,6 +292,38 @@
         [self.ticketButton setTitle:[NSString stringWithFormat:@"%@元券",_item.couponAmount] forState:UIControlStateNormal];
         self.salesCountLabel.text = [NSString stringWithFormat:@"月销 %zd",_item.sellNum];
         self.mineCommisionLabel.text = [NSString stringWithFormat:@"预估麦穗 %.2f",_item.mineCommision];
+    }
+}
+
+- (void)setSearchGoodsItem:(SearchGoodsItem *)searchGoodsItem {
+    _searchGoodsItem = searchGoodsItem;
+    if (_searchGoodsItem) {
+        //        [self.iconImageView wy_setImageWithUrlString:_item.iconUrl placeholderImage:PlaceHolderMainImage];
+        
+        [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:_searchGoodsItem.cover] placeholderImage:PlaceHolderMainImage];
+        //        self.titleLabel.text = [NSString stringWithFormat:@"          %@",_item.name];
+        NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString: [NSString stringWithFormat:@"          %@",_searchGoodsItem.title]];
+        text.yy_lineSpacing = AUTOSIZESCALEX(5);
+        self.titleLabel.attributedText = text;
+        
+        // 宝贝类型，2-淘宝 3-天猫
+        if ([_searchGoodsItem.type integerValue] == 2) {
+            self.ticketTypeLabel.text = @"淘宝";
+            self.ticketTypeLabel.backgroundColor = ColorWithHexString(@"F06E35");
+//        } else if ([_searchGoodsItem.type integerValue] == 2) {
+//            self.ticketTypeLabel.text = @"天猫";
+//            self.ticketTypeLabel.backgroundColor = ColorWithHexString(@"CC0C0C");
+        } else {
+            self.ticketTypeLabel.text = @"天猫";
+            self.ticketTypeLabel.backgroundColor = ColorWithHexString(@"CC0C0C");
+        }
+        NSMutableAttributedString *attribtStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"¥ %@",_searchGoodsItem.price_old]];
+        [attribtStr addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, attribtStr.length)];
+        self.originalPriceLabel.attributedText = attribtStr;
+        self.discountPriceLabel.text = [NSString stringWithFormat:@"券后价 ¥ %@",_searchGoodsItem.price];
+        [self.ticketButton setTitle:[NSString stringWithFormat:@"%@元券",_searchGoodsItem.quan] forState:UIControlStateNormal];
+        self.salesCountLabel.text = [NSString stringWithFormat:@"月销 %@",_searchGoodsItem.volume];
+        self.mineCommisionLabel.text = [NSString stringWithFormat:@"预估麦穗 %.2f",_searchGoodsItem.maisui];
     }
 }
 
