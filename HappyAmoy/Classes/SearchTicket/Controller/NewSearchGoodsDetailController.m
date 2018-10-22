@@ -111,7 +111,7 @@ static NSString *const listCellId = @"listCellId";
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     //    NSInteger itemId = [self.item.id integerValue];
     parameters[@"id"] = self.itemId;
-    parameters[@"userId"] = [LoginUserDefault userDefault].userItem.userId;
+    parameters[@"userid"] = [LoginUserDefault userDefault].userItem.userId;
     WeakSelf
     [[NetworkSingleton sharedManager] getCoRequestWithUrl:@"/GoodsDetail" parameters:parameters successBlock:^(id response) {
         if ([response[@"code"] integerValue] == 1) {

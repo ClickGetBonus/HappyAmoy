@@ -300,6 +300,7 @@
     if (_searchGoodsItem) {
         //        [self.iconImageView wy_setImageWithUrlString:_item.iconUrl placeholderImage:PlaceHolderMainImage];
         
+        self.isCollected = NO;
         [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:_searchGoodsItem.cover] placeholderImage:PlaceHolderMainImage];
         //        self.titleLabel.text = [NSString stringWithFormat:@"          %@",_item.name];
         NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString: [NSString stringWithFormat:@"          %@",_searchGoodsItem.title]];

@@ -96,11 +96,12 @@
                                                      } else if (status == 0) {
                                                          //跳转到商品详情页
                                                          [PastePopupView showByType:status data:response[@"data"][@"info"]];
+                                                         board.string = @"";
                                                          
                                                      } else if (status == 1) {
                                                          //跳转到搜索结果页
                                                          [PastePopupView showByType:status data:response[@"data"][@"info"]];
-                                                         
+                                                         board.string = @"";
                                                      }
                                                  }
                                              } failureBlock:^(NSString *error) {

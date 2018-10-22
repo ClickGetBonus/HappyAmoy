@@ -181,9 +181,35 @@
                        title:[NSString stringWithFormat:@"订单支付:%@",orderNum]
                 completation:^(NSDictionary *resultDic, NSInteger code, NSString *msg) {
                     WYLog(@"msg = %@",msg);
-                    if (code == 9000) { // 支付成功
-                        [WYProgress showSuccessWithStatus:@"支付成功"];
+                    /**
+                     resultStatus结果码含义
+                     返回码     含义
+                     9000     订单支付成功
+                     8000     正在处理中，支付结果未知（有可能已经支付成功），请查询商户订单列表中订单的支付状态
+                     4000     订单支付失败
+                     5000     重复请求
+                     6001     用户中途取消
+                     6002     网络连接出错
+                     6004     支付结果未知（有可能已经支付成功），请查询商户订单列表中订单的支付状态
+                     其它     其它支付错误
+                     */
+                    NSString *status = @"";
+                    switch (code) {
+                        case 9000:
+                            status = @"支付成功";
+                            break;
+                        case 6001:
+                            status = @"支付已取消";
+                            break;
+                        case 4000:
+                            status = @"支付失败";
+                            break;
+                        default:
+                            status = @"网络连接出错";
+                            break;
                     }
+                    
+                    [WYProgress showSuccessWithStatus:status];
                 }];
         
         
@@ -202,9 +228,6 @@
                                    title:[NSString stringWithFormat:@"订单支付:%@",orderNum]
                             completation:^(BOOL resp) {
                                 
-                                if (resp) { // 支付成功
-                                    [WYProgress showSuccessWithStatus:@"支付成功"];
-                                }
                                 
                             }];
     }];

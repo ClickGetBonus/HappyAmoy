@@ -577,7 +577,7 @@ static NSString *const rankCellId = @"rankCellId";
 //            [weakSelf.navigationController pushViewController:recentlyBrowserVc animated:YES];
 //
 //        }];
-        [WYProgress showWithStatus:@"敬请期待"];
+        [WYProgress showSuccessWithStatus:@"敬请期待"];
     } else if(index == 6){
         [LoginUtil loginWithFatherVc:self completedHandler:^{
             AboutUsController *aboutUsVc = [[AboutUsController alloc] init];

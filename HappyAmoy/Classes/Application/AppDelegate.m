@@ -303,6 +303,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     //检查粘贴板的内容是否需要显示弹窗
     UIPasteboard *board = [UIPasteboard generalPasteboard];
     NSString *pasteString = board.string;
+    
+    if (!pasteString || pasteString.length<=0) {
+        return;
+    }
+    
     [[NetworkSingleton sharedManager] getCoRequestWithUrl:@"/ClipboardSearch"
                                                parameters:@{@"keyword" : pasteString}
                                              successBlock:^(id response) {
@@ -315,11 +320,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                                                      } else if (status == 0) {
                                                          //跳转到商品详情页
                                                          [PastePopupView showByType:status data:response[@"data"][@"info"]];
-                                                         
+                                                         board.string = @"";
                                                      } else if (status == 1) {
                                                          //跳转到搜索结果页
                                                          [PastePopupView showByType:status data:response[@"data"][@"info"]];
-                                                         
+                                                         board.string = @"";
                                                      }
                                                  }
                                              } failureBlock:^(NSString *error) {
