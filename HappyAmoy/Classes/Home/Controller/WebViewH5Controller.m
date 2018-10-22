@@ -17,6 +17,8 @@
 @property (strong, nonatomic) UIWebView *webView;
 @property WebViewJavascriptBridge *bridge;
 
+@property (copy, nonatomic) NSString *wxOrderNum;
+
 @end
 
 @implementation WebViewH5Controller
@@ -55,6 +57,7 @@
     self.bridge = [WebViewJavascriptBridge bridgeForWebView:web];
     [self.bridge setWebViewDelegate:self];
     
+    WeakSelf
     // JS主动调用OjbC的方法
     // 这是JS会调用getUserIdFromObjC方法，这是OC注册给JS调用的
     // JS需要回调，当然JS也可以传参数过来。data就是JS所传的参数，不一定需要传
@@ -196,7 +199,11 @@
                     NSString *status = @"";
                     switch (code) {
                         case 9000:
+                        {
                             status = @"支付成功";
+                            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://haomaimall.lucius.cn/center/pay/payres/?c_o_no=%@",orderNum]];
+                            [weakSelf.webView loadRequest:[NSURLRequest requestWithURL:url]];
+                        }
                             break;
                         case 6001:
                             status = @"支付已取消";
@@ -215,13 +222,16 @@
         
     }];
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wxPaySuccess) name:PaySuccessNotificationName object:nil];
+    
     //微信支付
     [self.bridge registerHandler:@"weixinPay" handler:^(id data, WVJBResponseCallback responseCallback) {
         
         NSLog(@"%@",data);
         NSString *orderNum = data[@"order_no"];
         float orderAmout = [data[@"order_amount"] floatValue];
-        
+        weakSelf.wxOrderNum = orderNum;
         
         [MXWechatPayHandler payWithOrder:orderNum
                                   amount:orderAmout
@@ -260,6 +270,14 @@
     
 }
 
+
+- (void)wxPaySuccess {
+    
+    if (self.wxOrderNum && self.wxOrderNum.length>0) {
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://haomaimall.lucius.cn/center/pay/payres/?c_o_no=%@",self.wxOrderNum]];
+        [self.webView loadRequest:[NSURLRequest requestWithURL:url]];
+    }
+}
 
 //在页面出现的时候就将黑线隐藏起来
 -(void)viewWillAppear:(BOOL)animated

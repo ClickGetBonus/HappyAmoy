@@ -77,7 +77,9 @@
         WYLog(@"微信支付dic = %@",dic);
         
         // 判断返回的许可
-        if ([dic objectForKey:@"result_code"] && [[dic objectForKey:@"return_code"] isEqualToString:@"SUCCESS"] ) {
+        if ([dic objectForKey:@"result_code"] &&
+            [[dic objectForKey:@"return_code"] isEqualToString:@"SUCCESS"] &&
+            [[dic objectForKey:@"result_code"] isEqualToString:@"SUCCESS"]) {
             // 发起微信支付，设置参数
             PayReq *request = [[PayReq alloc] init];
             request.openID = [dic objectForKey:WXAPPID];
@@ -105,6 +107,8 @@
             
             // 调用微信
             [WXApi sendReq:request];
+        } else {
+            [WYProgress showErrorWithStatus:dic[@"err_code_des"]];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         

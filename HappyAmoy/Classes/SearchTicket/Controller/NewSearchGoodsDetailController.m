@@ -491,30 +491,32 @@ static NSString *const listCellId = @"listCellId";
     parameters[@"userId"] = [LoginUserDefault userDefault].userItem.userId;
     parameters[@"itemId"] = item.itemId;
     
-    [[NetworkSingleton sharedManager] getRequestWithUrl:@"/commodity/clickUrl" parameters:parameters successBlock:^(id response) {
-        if ([response[@"code"] integerValue] == RequestSuccess) {
-            //根据链接打开页面
-            id<AlibcTradePage> page = [AlibcTradePageFactory page: response[@"data"]];
-            
-            //淘客信息
-            AlibcTradeTaokeParams *taoKeParams=[[AlibcTradeTaokeParams alloc] init];
-            taoKeParams.pid=nil; //
-            //打开方式
-            AlibcTradeShowParams* showParam = [[AlibcTradeShowParams alloc] init];
-            // 强制跳手淘
-            showParam.openType = AlibcOpenTypeNative;
-            
-            [[AlibcTradeSDK sharedInstance].tradeService show:self.navigationController page:page showParams:showParam taoKeParams:nil trackParam:nil tradeProcessSuccessCallback:^(AlibcTradeResult * _Nullable result) {
-                
-            } tradeProcessFailedCallback:^(NSError * _Nullable error) {
-                
-            }];
-        } else {
-            [WYProgress showErrorWithStatus:response[@"msg"]];
-        }
-    } failureBlock:^(NSString *error) {
+    
+    id<AlibcTradePage> page = [AlibcTradePageFactory page: item.couponUrl];
+    
+    //淘客信息
+    AlibcTradeTaokeParams *taoKeParams=[[AlibcTradeTaokeParams alloc] init];
+    taoKeParams.pid=nil; //
+    //打开方式
+    AlibcTradeShowParams* showParam = [[AlibcTradeShowParams alloc] init];
+    // 强制跳手淘
+    showParam.openType = AlibcOpenTypeNative;
+    
+    [[AlibcTradeSDK sharedInstance].tradeService show:self.navigationController page:page showParams:showParam taoKeParams:nil trackParam:nil tradeProcessSuccessCallback:^(AlibcTradeResult * _Nullable result) {
+        
+    } tradeProcessFailedCallback:^(NSError * _Nullable error) {
         
     }];
+    
+//    [[NetworkSingleton sharedManager] getRequestWithUrl:@"/commodity/clickUrl" parameters:parameters successBlock:^(id response) {
+//        if ([response[@"code"] integerValue] == RequestSuccess) {
+//            //根据链接打开页面
+//        } else {
+//            [WYProgress showErrorWithStatus:response[@"msg"]];
+//        }
+//    } failureBlock:^(NSString *error) {
+//
+//    }];
 }
 
 #pragma mark - UITableViewDataSource
